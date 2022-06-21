@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.example.mapper.tripleMapper">
+	
+		<resultMap type="PointVO" id="pointResultMap">
+			<result property="id" column="id"/>
+			<result property="userId" column="userId"/>
+			<result property="reviewId" column="reviewId"/>
+			<result property="placeId" column="placeId"/>
+			<result property="point" column="point"/>
+			<result property="created_at" column="created_at"/>
+		</resultMap>
+		
+		<select id="findPlace" resultMap="pointResultMap" parameterType="java.util.HashMap">
+			SELECT * FROM POINT WHERE PLACEID = #{placeId} ORDER BY CREATED_AT LIMIT 1
+		</select>	
+		
+		<select id="selectPoint" resultMap="pointResultMap" parameterType="String">
+			SELECT *, (SELECT SUM(POINT) FROM POINT WHERE USERID = #{userId} GROUP BY userId) as total FROM POINT WHERE USERID = #{userId} limit 1
+		</select>		
+			
+		<select id="historyData" resultMap="pointResultMap" parameterType="java.util.HashMap">
+			SELECT * FROM POINT WHERE REVIEWID = #{reviewId}
+		</select>
+	
+		<insert id="insertPoint" parameterType="java.util.HashMap">
+			INSERT INTO POINT (userId, placeId, reviewId, point, created_at) VALUES (#{userId}, #{placeId}, #{reviewId}, #{point}, #{created_at})
+		</insert>
+		
+		<insert id="insertPointHistory" parameterType="java.util.HashMap">
+			INSERT INTO POINT_HISTORY (pointId, content, created_at) VALUES (#{pointId}, #{content}, #{created_at})
+		</insert>
+		
+		<delete id="deletePoint" parameterType="String">
+			DELETE FROM POINT WHERE REVIEWID = #{reviewId}
+		</delete>
+		
+		<update id="updatePoint" parameterType="java.util.HashMap">
+			UPDATE POINT SET POINT = #{point} WHERE REVIEWID = #{reviewId}
+		</update>
+	
+		
+	</mapper>
