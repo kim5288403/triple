@@ -1,14 +1,17 @@
 # triple
 
 ###evnet (포인트 부여)  
+
 postman url : http://localhost:8081//triple/event
 
 ###point (포인트 조회)
+
 postman url : http://localhost:8081//triple/point
 
 # mysql table
 
 ###point 테이블 create 코드
+
 ''' mysql
 
   CREATE TABLE `point` (
